@@ -1,0 +1,6 @@
+framework module Pods_DonKit_Tests {
+  umbrella header "Pods-DonKit_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

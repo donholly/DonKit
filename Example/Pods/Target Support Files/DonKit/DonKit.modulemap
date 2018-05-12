@@ -1,0 +1,6 @@
+framework module DonKit {
+  umbrella header "DonKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "DonKit",
+  "version": "0.1.0",
+  "summary": "A short description of DonKit.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Don Holly/DonKit",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Don Holly": "don.holly@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/Don Holly/DonKit.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "DonKit/Classes/**/*"
+}

@@ -1,0 +1,27 @@
+PODS:
+  - DonKit (0.1.0)
+  - Nimble (7.0.3)
+  - Quick (1.2.0)
+
+DEPENDENCIES:
+  - DonKit (from `../`)
+  - Nimble (~> 7.0.2)
+  - Quick (~> 1.2.0)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  DonKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DonKit: 305f4a765cc4fd8e2fd68a988a0827a47564d0ec
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+
+PODFILE CHECKSUM: a59c304dbf01971cfc8b3b00e8e9a875a611c397
+
+COCOAPODS: 1.5.0
