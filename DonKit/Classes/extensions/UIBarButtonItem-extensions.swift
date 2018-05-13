@@ -7,22 +7,22 @@
 
 import Foundation
 
-typealias UIBarButtonItemTargetClosure = (UIBarButtonItem) -> ()
+public typealias UIBarButtonItemTargetClosure = (UIBarButtonItem) -> ()
 
-class UIBarButtonItemClosureWrapper: NSObject {
+public class UIBarButtonItemClosureWrapper: NSObject {
     let closure: UIBarButtonItemTargetClosure
     init(_ closure: @escaping UIBarButtonItemTargetClosure) {
         self.closure = closure
     }
 }
 
-extension UIBarButtonItem {
+public extension UIBarButtonItem {
     
     private struct AssociatedKeys {
         static var targetClosure = "targetClosure"
     }
     
-    var actionClosure: UIBarButtonItemTargetClosure? {
+    public var actionClosure: UIBarButtonItemTargetClosure? {
         get {
             guard let closureWrapper = objc_getAssociatedObject(self, &AssociatedKeys.targetClosure) as? UIBarButtonItemClosureWrapper else { return nil }
             return closureWrapper.closure
@@ -33,14 +33,14 @@ extension UIBarButtonItem {
         }
     }
     
-    convenience init(title: String?, style: UIBarButtonItemStyle, closure: @escaping UIBarButtonItemTargetClosure) {
+    public convenience init(title: String?, style: UIBarButtonItemStyle, closure: @escaping UIBarButtonItemTargetClosure) {
         self.init(title: title, style: style, target: nil, action: nil)
         actionClosure = closure
         target = self
         action = #selector(closureAction)
     }
     
-    convenience init(image: UIImage, closure: @escaping UIBarButtonItemTargetClosure) {
+    public convenience init(image: UIImage, closure: @escaping UIBarButtonItemTargetClosure) {
         let button = UIButton()
         button.setBackgroundImage(image, for: .normal)
         button.widthAnchor.constraint(equalToConstant: 24).isActive = true
@@ -51,7 +51,7 @@ extension UIBarButtonItem {
         button.addTarget(self, action: #selector(closureAction), for: .touchUpInside)
     }
     
-    @objc func closureAction() {
+    @objc public func closureAction() {
         actionClosure?(self)
     }
 }

@@ -7,15 +7,15 @@
 
 import Foundation
 
-extension Array {
-    func split(by chunkSize: Int) -> [[Element]] {
+public extension Array {
+    public func split(by chunkSize: Int) -> [[Element]] {
         return stride(from: 0, to: self.count, by: chunkSize).map {
             Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
         }
     }
     
     /// Shuffle the elements of `self` in-place.
-    mutating func shuffle() {
+    public mutating func shuffle() {
         for i in 0..<(count - 1) {
             let j = Int(arc4random_uniform(UInt32(count - i))) + i
             self.swapAt(i, j)
