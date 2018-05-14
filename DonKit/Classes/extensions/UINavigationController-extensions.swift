@@ -53,4 +53,19 @@ extension UINavigationController {
             completion?()
         }
     }
+    
+    public func setViewControllers(_ viewControllers: [UIViewController], animated: Bool, completion: EmptyClosure?) {
+        if animated {
+            CATransaction.begin()
+            CATransaction.setCompletionBlock(completion)
+        }
+        
+        self.setViewControllers(viewControllers, animated: animated)
+        
+        if animated {
+            CATransaction.commit()
+        } else {
+            completion?()
+        }
+    }
 }

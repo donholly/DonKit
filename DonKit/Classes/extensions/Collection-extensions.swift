@@ -1,3 +1,12 @@
+//
+//  Collection-extensions.swift
+//  DonKit
+//
+//  Created by Don Holly on 5/12/18.
+//
+
+import Foundation
+
 public extension Collection {
 
     func jsonString(prettyPrinted: Bool = true) -> String? {
