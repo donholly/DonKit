@@ -8,3 +8,4 @@
 public typealias EmptyClosure = () -> Void
 public typealias ErrorableCompletionClosure = ((_ error: Error?) -> Void)
 public typealias ErrorableBoolCompletionClosure = ((_ success: Bool, _ error: Error?) -> Void)
+public typealias ErrorableStringCompletionClosure = ((_ string: String?, _ error: Error?) -> Void)
