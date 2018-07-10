@@ -29,4 +29,12 @@ extension DateFormatter {
     public static let iso8601WithMicroseconds: DateFormatter = {
         return withFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZZ")
     }()
+    
+    public static let monthDayYearTime: DateFormatter = {
+        return withFormat("MM/dd/yyyy h:mm a")
+    }()
+    
+    public static let fullMonthDayYearTime: DateFormatter = {
+        return withFormat("MMMM d, yyyy h:mm a")
+    }()
 }
