@@ -7,18 +7,20 @@
 
 import Foundation
 
-public protocol EnumCollection: Hashable {
-    static func cases() -> AnySequence<Self>
-    static var all: [Self] { get }
-}
+public protocol EnumCollection: Hashable {}
 
 public extension EnumCollection {
-    
-    public static func cases() -> AnySequence<Self> {
-        return AnySequence { () -> AnyIterator<Self> in
+    /// Sequence of all cases
+    public static var allCases: AnySequence<Self> {
+        typealias S = Self
+        return AnySequence { () -> AnyIterator<S> in
             var raw = 0
             return AnyIterator {
-                let current: Self = withUnsafePointer(to: &raw) { $0.withMemoryRebound(to: self, capacity: 1) { $0.pointee } }
+                let current: Self = withUnsafePointer(to: &raw) {
+                    $0.withMemoryRebound(to: S.self, capacity: 1) {
+                        $0.pointee
+                    }
+                }
                 guard current.hashValue == raw else {
                     return nil
                 }
@@ -28,7 +30,20 @@ public extension EnumCollection {
         }
     }
     
+    /// Array of all cases
     public static var all: [Self] {
-        return Array(self.cases())
+        return Self.allCases.map({ (e) -> Self in
+            return e
+        })
+    }
+    
+}
+
+public extension EnumCollection where Self: RawRepresentable {
+    /// Array of all raw values
+    public static var allRaws: [Self.RawValue] {
+        return Self.all.map({ (e) -> Self.RawValue in
+            return e.rawValue
+        })
     }
 }
