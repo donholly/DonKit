@@ -9,7 +9,7 @@ import Foundation
 
 @objc public extension UIApplication {
     
-    var threadSafeApplicationState: UIApplicationState {
+    var threadSafeApplicationState: UIApplication.State {
         guard Thread.isMainThread else {
             return DispatchQueue.main.sync { applicationState }
         }

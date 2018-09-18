@@ -33,7 +33,7 @@ public extension UIBarButtonItem {
         }
     }
     
-    public convenience init(title: String?, style: UIBarButtonItemStyle, closure: @escaping UIBarButtonItemTargetClosure) {
+    public convenience init(title: String?, style: UIBarButtonItem.Style, closure: @escaping UIBarButtonItemTargetClosure) {
         self.init(title: title, style: style, target: nil, action: nil)
         actionClosure = closure
         target = self

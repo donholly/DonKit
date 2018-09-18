@@ -2,7 +2,7 @@ import Foundation
 
 public class KeyboardStateCallback {
     
-    public typealias KeyboardStateChangeClosure = ((_ fromFrame: CGRect, _ toFrame: CGRect, _ duration: TimeInterval, _ curve: UIViewAnimationCurve) -> Void)
+    public typealias KeyboardStateChangeClosure = ((_ fromFrame: CGRect, _ toFrame: CGRect, _ duration: TimeInterval, _ curve: UIView.AnimationCurve) -> Void)
     
     var keyboardWillShowClosure: KeyboardStateChangeClosure?
     var keyboardDidShowClosure: KeyboardStateChangeClosure?
@@ -49,23 +49,23 @@ public class KeyboardState {
         }
         
         listeners.append(contentsOf: [
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: nil, using: { [weak self] notification in
-                if let toFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil, using: { [weak self] notification in
+                if let toFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
                     self?.keyboardFrame = toFrame.cgRectValue
                 }
                 self?.callSubscribers(notification: notification)
             }),
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil, using: { [weak self] notification in
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: nil, using: { [weak self] notification in
                 self?.keyboardIsShowing = true
                 self?.callSubscribers(notification: notification)
             }),
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil, using: { [weak self] notification in
-                if let toFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: { [weak self] notification in
+                if let toFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
                     self?.keyboardFrame = toFrame.cgRectValue
                 }
                 self?.callSubscribers(notification: notification)
             }),
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidHide, object: nil, queue: nil, using: { [weak self] notification in
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: nil, using: { [weak self] notification in
                 self?.keyboardIsShowing = false
                 self?.callSubscribers(notification: notification)
             })
@@ -73,7 +73,7 @@ public class KeyboardState {
     }
     
     @objc func keyboardDidChange(notification: Notification) {
-        if let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
             self.keyboardFrame = keyboardFrame
         }
     }
@@ -88,10 +88,10 @@ public class KeyboardState {
     
     private func callSubscribers(notification: Notification) {
         
-        guard let fromFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
-            let toFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
-            let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval,
-            let curve = UIViewAnimationCurve(rawValue: ((notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int) ?? UIViewAnimationCurve.linear.rawValue)) else {
+        guard let fromFrame = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let toFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval,
+            let curve = UIView.AnimationCurve(rawValue: ((notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? UIView.AnimationCurve.linear.rawValue)) else {
                 assertionFailure("Unable to get some info from the notification")
                 return
         }
@@ -100,13 +100,13 @@ public class KeyboardState {
             let subscriber = sub as AnyObject
             if let keyboardStateCallback = subscribers.object(forKey: subscriber) {
                 switch notification.name {
-                case Notification.Name.UIKeyboardWillShow:
+                case UIResponder.keyboardWillShowNotification:
                     keyboardStateCallback.keyboardWillShowClosure?(fromFrame, toFrame, duration, curve)
-                case Notification.Name.UIKeyboardDidShow:
+                case UIResponder.keyboardDidShowNotification:
                     keyboardStateCallback.keyboardDidShowClosure?(fromFrame, toFrame, duration, curve)
-                case Notification.Name.UIKeyboardWillHide:
+                case UIResponder.keyboardWillHideNotification:
                     keyboardStateCallback.keyboardWillHideClosure?(fromFrame, toFrame, duration, curve)
-                case Notification.Name.UIKeyboardDidHide:
+                case UIResponder.keyboardDidHideNotification:
                     keyboardStateCallback.keyboardDidHideClosure?(fromFrame, toFrame, duration, curve)
                 default:
                     assertionFailure("Unhandled Notification.Name: \(notification.name)")
@@ -116,8 +116,8 @@ public class KeyboardState {
     }
 }
 
-public extension UIViewAnimationOptions {
-    init(curve: UIViewAnimationCurve) {
+public extension UIView.AnimationOptions {
+    init(curve: UIView.AnimationCurve) {
         switch curve {
         case .easeIn:
             self = .curveEaseIn
