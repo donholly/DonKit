@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CGRect {
+public extension CGRect {
     var area: CGFloat {
         return size.width * size.height
     }
